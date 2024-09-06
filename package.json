@@ -1,0 +1,11 @@
+{
+  "name": "silkroad_apis",
+  "version": "1.0.0",
+  "description": "A Node.js and Express.js-based API powering the Silk Road app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ahmed Magdy",
+  "license": "ISC"
+}
