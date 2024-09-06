@@ -6,6 +6,9 @@ const colors = require("colors");
 // Load env vars
 dotenv.config();
 
+// Connect to database
+require("./src/config/db")();
+
 const app = express();
 
 // body parser
