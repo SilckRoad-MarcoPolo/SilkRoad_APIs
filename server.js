@@ -3,6 +3,10 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const colors = require("colors");
 
+// Utils
+const ApiError = require("./src/utils/apiError");
+const globalError = require("./src/middlewares/errorMiddleware");
+
 // Routs
 const authRoutes = require("./src/routes/authRoutes");
 
@@ -25,6 +29,14 @@ if (process.env.NODE_ENV === "development") {
 // Mount routers
 app.use("/api/v1/auth", authRoutes);
 
+// 404 Error Handling Middleware
+app.all("*", (req, res, next) => {
+  next(new ApiError(`Can't find ${req.originalUrl} on this server`, 400));
+});
+
+// Global Error Handling Middleware
+app.use(globalError);
+
 // Server Connection
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
@@ -32,4 +44,11 @@ app.listen(port, () => {
     `server (${process.env.NODE_ENV}) listening at http://localhost:${port}`
       .yellow.bold
   );
+});
+
+// Handle unhandled promise rejections
+process.on("uncaughtException", (err) => {
+  console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
+  console.log(err);
+  process.exit(1);
 });

@@ -4,7 +4,7 @@ const sendEmail = require("../utils/sendEmail");
 const asyncHandler = require("express-async-handler");
 const passwordResetTemplate = require("../utils/emailTemplate");
 const { signToken } = require("../utils/createToken");
-const AppError = require("../utils/apiError");
+const ApiError = require("../utils/apiError");
 const util = require("util");
 const crypto = require("crypto");
 
@@ -37,14 +37,14 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   // Check if email and password exist in the request body
   if (!email || !password) {
-    return next(new AppError("Please provide email and password", 400));
+    return next(new ApiError("Please provide email and password", 400));
   }
 
   // Check if user exists and password is correct
   const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect email or password", 401));
+    return next(new ApiError("Incorrect email or password", 401));
   }
 
   // If everything is ok, send token to client
@@ -72,7 +72,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   if (!token) {
     return next(
-      new AppError("You are not logged in! Please login to get access.", 401)
+      new ApiError("You are not logged in! Please login to get access.", 401)
     );
   }
   // validate token
@@ -85,7 +85,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   if (!currentUser) {
     return next(
-      new AppError(
+      new ApiError(
         "The user belonging to this token does no longer exist.",
         401
       )
@@ -97,7 +97,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
   );
   if (isPasswordChanged) {
     return next(
-      new AppError("User recently changed password! Please login again.", 401)
+      new ApiError("User recently changed password! Please login again.", 401)
     );
   }
   // allow access to protected route
@@ -112,7 +112,7 @@ exports.restrictTo = (...role) => {
   return (req, res, next) => {
     if (!role.includes(req.user.role)) {
       return next(
-        new AppError("You do not have permission to perform this action", 403)
+        new ApiError("You do not have permission to perform this action", 403)
       );
     }
     next();
@@ -129,7 +129,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(
-      new AppError(`There is no user with that email ${req.body.email}`, 404)
+      new ApiError(`There is no user with that email ${req.body.email}`, 404)
     );
   }
   //if user exist, generate reset random 6 digits and save it in db
@@ -164,7 +164,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     // Save without triggering validation
     await user.save({ validateBeforeSave: false });
 
-    return next(new AppError("There is an Error in sending Email", 500));
+    return next(new ApiError("There is an Error in sending Email", 500));
   }
 
   res.status(200).json({
@@ -190,7 +190,7 @@ exports.verifyPasswordCode = asyncHandler(async (req, res, next) => {
     passwordResetExpires: { $gt: Date.now() },
   });
   if (!user) {
-    return next(new AppError("Reset Code Invalid or Expired"));
+    return next(new ApiError("Reset Code Invalid or Expired"));
   }
   // reset code valid
   user.passwordResetVerified = true;
@@ -212,12 +212,12 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(
-      new AppError(`There is no user with email ${req.body.email}`, 400)
+      new ApiError(`There is no user with email ${req.body.email}`, 400)
     );
   }
   // check if reset code is verifed
   if (!user.passwordResetVerified) {
-    return next(new AppError(`Reset code not verifed`, 404));
+    return next(new ApiError(`Reset code not verifed`, 404));
   }
 
   user.password = req.body.newPassword;
