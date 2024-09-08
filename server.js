@@ -3,6 +3,9 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const colors = require("colors");
 
+// Routs
+const authRoutes = require("./src/routes/authRoutes");
+
 // Load env vars
 dotenv.config();
 
@@ -18,6 +21,9 @@ app.use(express.json());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+// Mount routers
+app.use("/api/v1/auth", authRoutes);
 
 // Server Connection
 const port = process.env.PORT || 3000;
