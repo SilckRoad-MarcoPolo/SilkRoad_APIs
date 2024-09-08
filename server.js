@@ -9,6 +9,7 @@ const globalError = require("./src/middlewares/errorMiddleware");
 
 // Routs
 const authRoutes = require("./src/routes/authRoutes");
+const userRoutes = require("./src/routes/userRoutes");
 
 // Load env vars
 dotenv.config();
@@ -28,6 +29,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount routers
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
 
 // 404 Error Handling Middleware
 app.all("*", (req, res, next) => {
