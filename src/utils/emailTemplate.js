@@ -6,8 +6,8 @@ const passwordResetTemplate = (user, resetCode) => `
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
+                font-family: 'Roboto', sans-serif;
+                background-color: #f0f0f0;
                 margin: 0;
                 padding: 0;
             }
@@ -15,15 +15,19 @@ const passwordResetTemplate = (user, resetCode) => `
                 max-width: 600px;
                 margin: 40px auto;
                 background-color: #ffffff;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
                 overflow: hidden;
             }
             .email-header {
-                background-color: #1a73e8;
+                background-color: #33336c; /* Silk Road primary color */
                 color: #ffffff;
                 text-align: center;
-                padding: 20px;
+                padding: 30px;
+            }
+            .email-header img {
+                width: 50px;
+                height: 50px;
             }
             .email-body {
                 padding: 20px;
@@ -34,22 +38,22 @@ const passwordResetTemplate = (user, resetCode) => `
                 line-height: 1.6;
             }
             .reset-code {
-                background-color: #f1f1f1;
-                border-left: 5px solid #1a73e8;
+                background-color: #f9f9f9;
+                border-left: 5px solid #e87e04; /* Silk Road accent color */
                 padding: 10px 20px;
-                font-size: 18px;
+                font-size: 20px;
                 font-weight: bold;
                 color: #333333;
             }
             .email-footer {
                 text-align: center;
                 padding: 20px;
-                background-color: #f1f1f1;
+                background-color: #f7f7f7;
                 font-size: 14px;
                 color: #777777;
             }
             .email-footer a {
-                color: #1a73e8;
+                color: #e87e04;
                 text-decoration: none;
             }
         </style>
@@ -57,19 +61,19 @@ const passwordResetTemplate = (user, resetCode) => `
     <body>
         <div class="email-container">
             <div class="email-header">
+                <img src="https://silkroadapp.com/icon.png" alt="Silk Road Icon"> <!-- Silk Road Icon -->
                 <h1>Password Reset Request</h1>
             </div>
             <div class="email-body">
                 <p>Dear ${user.name},</p>
-                <p>We received a request to reset the password for your AUTHCUARD account.</p>
+                <p>We received a request to reset the password for your Silk Road account.</p>
                 <p class="reset-code">Reset Code: ${resetCode}</p>
-                <p>Please enter this code on the password reset page to proceed. For security purposes, the code will expire shortly.</p>
-                <p>If you did not request this reset, contact our support team immediately.</p>
-                <p>Thank you for your prompt attention.</p>
-                <p>Best regards,<br>The DEVLANT Team</p>
+                <p>Please enter this code on the password reset page to proceed. The code will expire shortly.</p>
+                <p>If you did not request this reset, please contact our support team immediately.</p>
+                <p>Best regards,<br>The Silk Road Team</p>
             </div>
             <div class="email-footer">
-                <p>If you have any questions, feel free to <a href="mailto:support@devlant.com">contact our support team</a>.</p>
+                <p>If you have any questions, feel free to <a href="mailto:support@silkroadapp.com">contact our support team</a>.</p>
             </div>
         </div>
     </body>
