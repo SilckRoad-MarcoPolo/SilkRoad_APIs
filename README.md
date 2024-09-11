@@ -1,9 +1,6 @@
 # Silk Road Backend APIs
 
 **Silk Road** is an AI-driven mobile application designed to guide developers and software engineers through personalized learning paths. The backend API, built with Node.js and Express.js, provides the necessary endpoints to power features such as user authentication, career track recommendations, and personalized skill assessments.
-<<<<<<< HEAD
-=======
-
 ---
 
 ## Features (at present)
@@ -170,7 +167,7 @@ For detailed API documentation, you can access the Postman documentation:
 
 [API Documentation on Postman](https://documenter.getpostman.com/view/28938696/2sAXjSxoBE)
 
-### Error Handling
+## Error Handling
 
 All errors are handled globally using a custom middleware (`globalError`) to provide standardized error responses.
 
@@ -181,4 +178,3 @@ This project is licensed under the ISC License.
 ## Author
 
 **Ahmed Magdy**
->>>>>>> dd024e1 (Update README File)
