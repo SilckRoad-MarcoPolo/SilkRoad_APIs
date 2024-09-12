@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const colors = require("colors");
+const path = require("path");
 
 // Utils
 const ApiError = require("./src/utils/apiError");
@@ -28,10 +29,18 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// Serve static files
+app.use(express.static("public"));
+
 // Mount routers
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1", uploadRoutes);
+
+// Static page for API endpoints
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "src/public", "home.html"));
+});
 
 // 404 Error Handling Middleware
 app.all("*", (req, res, next) => {
