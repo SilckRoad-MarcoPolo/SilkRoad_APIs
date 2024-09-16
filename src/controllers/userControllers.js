@@ -2,22 +2,14 @@ const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const ApiError = require("../utils/apiError");
 const { signToken } = require("../utils/createToken");
+const mainHandlers = require("./mainHandlers");
 
 /**
  * @desc    Get all users
  * @route   GET /api/v1/users
  * @access  Private/Admin
  */
-exports.getUsers = asyncHandler(async (req, res, next) => {
-  const users = await User.find();
-  res.status(200).json({
-    status: "success",
-    length: users.length,
-    data: {
-      users,
-    },
-  });
-});
+exports.getUsers = mainHandlers.getAll(User);
 
 /**
  * @desc    Get user by ID
@@ -25,36 +17,14 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
  * @access  Private/Admin
  * @param   {String} id - User ID
  */
-exports.getUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
-  if (!user) {
-    return next(new ApiError("User not found", 404));
-  }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
-});
+exports.getUser = mainHandlers.getOne(User);
 
 /**
  * @desc    Create user
  * @route   POST /api/v1/users
  * @access  Private/Admin
  */
-exports.createUser = asyncHandler(async (req, res, next) => {
-  const user = await User.create(req.body);
-
-  res.status(201).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
-});
+exports.createUser = mainHandlers.createOne(User);
 
 /**
  * @desc    Update user
@@ -62,23 +32,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
  * @access  Private/Admin
  * @param   {String} id - User ID
  */
-exports.updateUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!user) {
-    return next(new ApiError("User not found", 404));
-  }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
-});
+exports.updateUser = mainHandlers.updateOne(User);
 
 /**
  * @desc    Delete user
@@ -86,18 +40,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
  * @access  Private/Admin
  * @param   {String} id - User ID
  */
-exports.deleteUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findByIdAndDelete(req.params.id);
-
-  if (!user) {
-    return next(new ApiError("User not found", 404));
-  }
-
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
-});
+exports.deleteUser = mainHandlers.deleteOne(User);
 
 /**
  * @desc    Update Password

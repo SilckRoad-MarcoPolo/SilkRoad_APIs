@@ -9,9 +9,7 @@ const ApiError = require("./src/utils/apiError");
 const globalError = require("./src/middlewares/errorMiddleware");
 
 // Routs
-const authRoutes = require("./src/routes/authRoutes");
-const userRoutes = require("./src/routes/userRoutes");
-const uploadRoutes = require("./src/routes/uploadRoutes");
+const mainRoutes = require("./src/routes/mainRoutes");
 
 // Load env vars
 dotenv.config();
@@ -33,9 +31,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.static("public"));
 
 // Mount routers
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/users", userRoutes);
-app.use("/api/v1", uploadRoutes);
+mainRoutes(app);
 
 // Static page for API endpoints
 app.get("/", (req, res) => {
