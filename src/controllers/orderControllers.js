@@ -90,6 +90,32 @@ exports.getCheckoutSession = asyncHandler(async (req, res, next) => {
 
 /**
  * @desc    Create New Order
+ */
+const createModuleOrder = async (session) => {
+  const moduleId = session.client_reference_id;
+  const orderPrice = session.amount_total / 100;
+
+  const module = await Module.findById(moduleId);
+  const user = await User.findOne({ email: session.customer_email });
+
+  // 3) Create order with default paymentMethodType card
+  const order = await Order.create({
+    user: user._id,
+    module: module._id,
+    totalOrderPrice: orderPrice,
+    isPaid: true,
+    paidAt: Date.now(),
+    paymentMethodType: "card",
+  });
+
+  // 4) (Optional) Handle additional module logic if necessary (e.g., updating access to content)
+  if (order) {
+    await Module.updateOne({ _id: module._id }, { $inc: { sold: 1 } });
+  }
+};
+
+/**
+ * @desc    Create New Order
  * @route   POST /api/orders/webhooks-checkout
  * @access  Private
  */
@@ -109,7 +135,7 @@ exports.webhookCheckout = asyncHandler(async (req, res, next) => {
   }
   if (event.type === "checkout.session.completed") {
     //  Create order
-    console.log("Checkout session completed");
+    createModuleOrder(event.data.object);
   }
 
   res.status(200).json({
