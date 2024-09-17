@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { protect, restrictTo } = require("../controllers/authControllers");
-const appointmentController = require("../controllers/appointmentController");
+const appointmentController = require("../controllers/appointmentControllers");
 const {
   createAndUpdateAppointmentValidator,
   checkApointmentId,

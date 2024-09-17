@@ -9,7 +9,7 @@ const ApiError = require("./src/utils/apiError");
 const globalError = require("./src/middlewares/errorMiddleware");
 
 // Routs
-const mainRoutes = require("./src/routes/mainRoutes");
+const mainRoutes = require("./src/routes/MAINROUTES");
 
 // Load env vars
 dotenv.config();

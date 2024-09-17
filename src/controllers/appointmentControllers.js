@@ -1,8 +1,5 @@
 const Appointment = require("../models/appointmentModel");
 const mainHandlers = require("./mainHandlers");
-const asyncHandler = require("express-async-handler");
-const ApiError = require("../utils/apiError");
-const Mentor = require("../models/mentorModel");
 
 /**
  * @desc    Get all appointments

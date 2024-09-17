@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { protect, restrictTo } = require("../controllers/authControllers");
-const mentorController = require("../controllers/mentorController");
+const mentorController = require("../controllers/mentorControllers");
 const userValidator = require("../validators/userValidators");
 
 router

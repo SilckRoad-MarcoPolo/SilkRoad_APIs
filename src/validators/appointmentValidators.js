@@ -1,6 +1,5 @@
 const { check, body } = require("express-validator");
 const validetorMiddleware = require("../middlewares/validatorMiddleware");
-const Appointment = require("../models/appointmentModel");
 
 exports.createAndUpdateAppointmentValidator = [
   check("mentorId")
