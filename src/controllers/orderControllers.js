@@ -92,7 +92,7 @@ exports.getCheckoutSession = asyncHandler(async (req, res, next) => {
 const createModuleOrder = async (session) => {
   try {
     const moduleId = session.client_reference_id;
-    const orderPrice = session.amount_total / 100;
+    const orderPrice = session.amount_total / 100; // Assuming this is the price without tax
 
     // Fetch the module by id
     const module = await Module.findById(moduleId);
@@ -106,14 +106,27 @@ const createModuleOrder = async (session) => {
       throw new Error("User not found");
     }
 
-    // Create the order
+    // tax calculation (10%)
+    const taxRate = 0.1;
+    const taxPrice = orderPrice * taxRate;
+
+    // Total price including tax
+    const totalPrice = orderPrice + taxPrice;
+
+    // Create the order using the new schema structure
     const order = await Order.create({
-      user: user._id,
-      module: module._id,
-      totalOrderPrice: orderPrice,
+      user_id: user._id,
+      module: [
+        {
+          module_id: module._id,
+          quantity: 1, // You can update this if you want dynamic quantities
+          price: orderPrice,
+        },
+      ],
+      taxPrice: taxPrice,
+      total_price: totalPrice,
       isPaid: true,
       paidAt: Date.now(),
-      paymentMethodType: "card",
     });
 
     // Update module sold count if order is successfully created
