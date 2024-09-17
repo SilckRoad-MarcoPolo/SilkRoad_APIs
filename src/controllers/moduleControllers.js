@@ -1,5 +1,5 @@
 const Module = require("../models/moduleModel");
-const mainHandlers = require("./mainHandlers");
+const mainHandlers = require("./MAINHANDLERS");
 
 /**
  * @desc    Get all modules

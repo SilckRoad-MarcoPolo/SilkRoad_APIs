@@ -2,7 +2,7 @@ const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const ApiError = require("../utils/apiError");
 const { signToken } = require("../utils/createToken");
-const mainHandlers = require("./mainHandlers");
+const mainHandlers = require("./MAINHANDLERS");
 
 /**
  * @desc    Get all users

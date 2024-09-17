@@ -1,5 +1,5 @@
 const Mentor = require("../models/mentorModel");
-const mainHandlers = require("./mainHandlers");
+const mainHandlers = require("./MAINHANDLERS");
 
 /**
  * @desc    Get all mentors

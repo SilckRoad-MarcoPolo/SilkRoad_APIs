@@ -1,5 +1,5 @@
 const Appointment = require("../models/appointmentModel");
-const mainHandlers = require("./mainHandlers");
+const mainHandlers = require("./MAINHANDLERS");
 
 /**
  * @desc    Get all appointments

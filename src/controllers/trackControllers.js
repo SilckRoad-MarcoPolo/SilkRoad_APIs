@@ -1,5 +1,5 @@
 const Track = require("../models/trackModel");
-const mainHandlers = require("./mainHandlers");
+const mainHandlers = require("./MAINHANDLERS");
 
 /**
  * @desc    Get all tracks

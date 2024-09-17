@@ -6,6 +6,9 @@ const mentorRoutes = require("./mentorRoutes");
 const appointmentRoutes = require("./appointmentRoutes");
 const trackRoutes = require("./trackRoutes");
 const moduleRoutes = require("./moduleRoutes");
+const dailyChallengeRoutes = require("./dailyChallengeRoutes")
+const badgeRoutes = require("./badgeRoutes");
+const streackRoutrs = require("./streacksRoutes");
 
 const mountRoutes = (app) => {
   app.use("/api/v1/auth", authRoutes);
@@ -15,6 +18,9 @@ const mountRoutes = (app) => {
   app.use("/api/v1/appointments", appointmentRoutes);
   app.use("/api/v1/tracks", trackRoutes);
   app.use("/api/v1/modules", moduleRoutes);
+  app.use("/api/v1/daily-challenges", dailyChallengeRoutes);
+  app.use("/api/v1/badges", badgeRoutes);
+  app.use("/api/v1/streaks", streackRoutrs);
 };
 
 module.exports = mountRoutes;
