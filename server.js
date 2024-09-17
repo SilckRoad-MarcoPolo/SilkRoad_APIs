@@ -11,6 +11,9 @@ const globalError = require("./src/middlewares/errorMiddleware");
 // Routs
 const mainRoutes = require("./src/routes/MAINROUTES");
 
+// Webhooks Controller
+const orderController = require("./src/controllers/orderControllers");
+
 // Load env vars
 dotenv.config();
 
@@ -18,6 +21,13 @@ dotenv.config();
 require("./src/config/db")();
 
 const app = express();
+
+// Checkout Webhook
+app.post(
+  "/webhooks-checkout",
+  express.raw({ type: "application/json" }),
+  orderController.webhookCheckout
+);
 
 // body parser
 app.use(express.json());

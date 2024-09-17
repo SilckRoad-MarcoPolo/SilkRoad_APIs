@@ -9,6 +9,7 @@ const moduleRoutes = require("./moduleRoutes");
 const dailyChallengeRoutes = require("./dailyChallengeRoutes")
 const badgeRoutes = require("./badgeRoutes");
 const streackRoutrs = require("./streacksRoutes");
+const orderRoutes = require("./orderRoutes");
 
 const mountRoutes = (app) => {
   app.use("/api/v1/auth", authRoutes);
@@ -21,6 +22,7 @@ const mountRoutes = (app) => {
   app.use("/api/v1/daily-challenges", dailyChallengeRoutes);
   app.use("/api/v1/badges", badgeRoutes);
   app.use("/api/v1/streaks", streackRoutrs);
+  app.use("/api/v1/orders", orderRoutes);
 };
 
 module.exports = mountRoutes;
