@@ -47,7 +47,7 @@ router
   .patch(
     protect,
     restrictTo("admin"),
-    userValidators.checkIDValidator,
+    userValidators.updateUserValidator,
     userController.updateUser
   )
   .delete(
