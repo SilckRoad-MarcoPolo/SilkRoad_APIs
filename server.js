@@ -24,7 +24,7 @@ const app = express();
 
 // Checkout Webhook
 app.post(
-  "/webhooks-checkout",
+  "/webhook-checkout",
   express.raw({ type: "application/json" }),
   orderController.webhookCheckout
 );
