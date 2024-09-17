@@ -1,17 +1,29 @@
 const asyncHandler = require("express-async-handler");
 const ApiError = require("../utils/apiError");
+const ApiFeatures = require("../utils/apiFeatures");
 
 /**
  * @param {*} Model
- * @returns  {Function}
- * @desc    Get all documents
+ * @param {string[]} searchFields - Fields to search within the model
+ * @returns {Function}
+ * @desc Get all documents with filtering, sorting, field limiting, searching, and pagination
  */
-exports.getAll = (Model) =>
+exports.getAll = (Model, searchableFields) =>
   asyncHandler(async (req, res, next) => {
-    const docs = await Model.find();
+    // Initialize ApiFeatures with the Mongoose query and query string
+    const features = new ApiFeatures(Model.find(), req.query);
+
+    // Apply filtering, sorting, field limiting, searching, and pagination
+    features.filter().sort().limitFields().search(searchableFields);
+
+    // Execute the query with pagination
+    const countDocuments = await Model.countDocuments();
+    const docs = await features.paginate(countDocuments).mongooseQuery;
+
     res.status(200).json({
       status: "success",
-      length: docs.length,
+      results: docs.length,
+      pagination: features.paginationResult,
       data: {
         docs,
       },

@@ -6,7 +6,7 @@ const mainHandlers = require("./MAINHANDLERS");
  * @route   GET /api/v1/tracks
  * @access  Public
  */
-exports.getTracks = mainHandlers.getAll(Track);
+exports.getTracks = mainHandlers.getAll(Track, ['track_name', 'description']);
 
 /**
  * @desc    Get track by ID
