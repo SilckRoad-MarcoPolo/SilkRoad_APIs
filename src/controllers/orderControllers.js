@@ -89,58 +89,65 @@ exports.getCheckoutSession = asyncHandler(async (req, res, next) => {
   });
 });
 
-/**
- * @desc    Create New Order
- */
 const createModuleOrder = async (session) => {
-  const moduleId = session.client_reference_id;
-  const orderPrice = session.amount_total / 100;
+  try {
+    const moduleId = session.client_reference_id;
+    const orderPrice = session.amount_total / 100;
 
-  const module = await Module.findById(moduleId);
-  const user = await User.findOne({ email: session.customer_email });
+    // Fetch the module by id
+    const module = await Module.findById(moduleId);
+    if (!module) {
+      throw new Error("Module not found");
+    }
 
-  // 3) Create order with default paymentMethodType card
-  const order = await Order.create({
-    user: user._id,
-    module: module._id,
-    totalOrderPrice: orderPrice,
-    isPaid: true,
-    paidAt: Date.now(),
-    paymentMethodType: "card",
-  });
+    // Fetch the user by email
+    const user = await User.findOne({ email: session.customer_email });
+    if (!user) {
+      throw new Error("User not found");
+    }
 
-  // 4) (Optional) Handle additional module logic if necessary (e.g., updating access to content)
-  if (order) {
-    await Module.updateOne({ _id: module._id }, { $inc: { sold: 1 } });
+    // Create the order
+    const order = await Order.create({
+      user: user._id,
+      module: module._id,
+      totalOrderPrice: orderPrice,
+      isPaid: true,
+      paidAt: Date.now(),
+      paymentMethodType: "card",
+    });
+
+    // Update module sold count if order is successfully created
+    if (order) {
+      await Module.updateOne({ _id: module._id }, { $inc: { sold: 1 } });
+    }
+  } catch (error) {
+    console.error("Error creating order:", error.message);
   }
 };
 
-/**
- * @desc    Create New Order
- * @route   POST /api/orders/webhooks-checkout
- * @access  Private
- */
 exports.webhookCheckout = asyncHandler(async (req, res, next) => {
   const sig = req.headers["stripe-signature"];
-
   let event;
 
   try {
+    // Verify and construct event
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
+    console.error("Stripe Webhook Error:", err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
+
   if (event.type === "checkout.session.completed") {
-    //  Create order
-    createModuleOrder(event.data.object);
+    // Wait for the order to be created
+    await createModuleOrder(event.data.object);
   }
 
   res.status(200).json({
     received: true,
-    message: "Webhook received successfully !",
+    message: "Webhook received successfully!",
   });
 });
