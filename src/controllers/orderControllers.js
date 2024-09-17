@@ -49,50 +49,44 @@ exports.updateOrderToPaid = asyncHandler(async (req, res, next) => {
  * @access  Private
  */
 exports.getCheckoutSession = asyncHandler(async (req, res, next) => {
+  const taxPrice = 0;
+
   // 1) Get module by ID
   const module = await Module.findById(req.params.moduleId);
   if (!module) {
-    return next(new ApiError("Module not found with the provided ID", 404));
+    return next(new ApiError("There is no such a module for this module id"));
   }
 
-  // 2) Calculate tax and total price
-  const taxRate = 0.1;
+  // 2) Get order price depending on module price
   const modulePrice = module.price;
-  const taxPrice = modulePrice * taxRate;
   const totalOrderPrice = modulePrice + taxPrice;
 
-  // 3) Create the Stripe checkout session
-  try {
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price_data: {
-            currency: "egp",
-            product_data: {
-              name: module.name, 
-            },
-            unit_amount: Math.round(totalOrderPrice * 100), 
+  // 3) Create checkout session
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: "egp",
+          product_data: {
+            name: req.user.name,
           },
-          quantity: 1,
+          unit_amount: totalOrderPrice * 100,
         },
-      ],
-      mode: "payment",
-      success_url: `${req.protocol}://${req.get("host")}/orders`,
-      cancel_url: `${req.protocol}://${req.get("host")}/modules/${module._id}`,
-      customer_email: req.user.email,
-      client_reference_id: req.params.moduleId, 
-    });
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: `${req.protocol}://${req.get("host")}/orders`,
+    cancel_url: `${req.protocol}://${req.get("host")}/modules/${module._id}`,
+    customer_email: req.user.email,
+    client_reference_id: req.params.moduleId,
+  });
 
-    // 4) Send session as response
-    res.status(200).json({
-      status: "success",
-      session,
-    });
-  } catch (error) {
-    return next(
-      new ApiError("There was an error creating the checkout session", 500)
-    );
-  }
+  // 4) Send session as response
+  res.status(200).json({
+    status: "success",
+    session,
+  });
 });
 
 const createModuleOrder = async (session) => {
