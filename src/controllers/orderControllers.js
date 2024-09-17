@@ -4,6 +4,7 @@ const Order = require("../models/orderModel");
 const User = require("../models/userModel");
 const Module = require("../models/moduleModel");
 const mainHandler = require("./MAINHANDLERS");
+require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 /**
