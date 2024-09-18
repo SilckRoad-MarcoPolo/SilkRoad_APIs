@@ -2,24 +2,8 @@ const asyncHandler = require("express-async-handler");
 const ApiError = require("../utils/apiError");
 const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
-const Module = require("../models/moduleModel");
-const mainHandler = require("./MAINHANDLERS");
 require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
-/**
- * @desc    Get All Orders
- * @route   GET /api/orders
- * @access  Private/Admin
- */
-exports.getAllOrders = mainHandler.getAll(Order);
-
-/**
- * @desc    Get Order By ID
- * @route   GET /api/orders/:id
- * @access  Private/Admin
- */
-exports.getOrderById = mainHandler.getOne(Order);
 
 /**
  * @desc    Create Order For Logged User
@@ -121,4 +105,54 @@ exports.stripeWebhook = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({ received: true });
+});
+
+/**
+ * @desc    Get User Orders
+ * @route   GET /api/orders/my-orders
+ * @access  Private/Logged User
+ */
+exports.getMyOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id });
+  res.status(200).json({
+    success: true,
+    data: orders,
+  });
+});
+
+/**
+ * @desc    Get Order By ID For Logged User
+ * @route   GET /api/orders/my-orders/:id
+ * @access  Private/Logged User
+ */
+exports.getMyOrderById = asyncHandler(async (req, res) => {
+  const order = await Order.findOne({
+    _id: req.params.id,
+    user: req.user._id,
+  });
+  if (!order) throw new ApiError("Order not found", 404);
+
+  res.status(200).json({
+    success: true,
+    data: order,
+  });
+});
+
+/**
+ * @desc    Mark Order Is Paid and Paid At
+ * @route   PUT /api/orders/:id/pay
+ * @access  Private/Admin
+ */
+exports.markOrderAsPaid = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (!order) throw new ApiError("Order not found", 404);
+
+  order.isPaid = true;
+  order.paidAt = Date.now();
+  await order.save();
+
+  res.status(200).json({
+    success: true,
+    data: order,
+  });
 });
