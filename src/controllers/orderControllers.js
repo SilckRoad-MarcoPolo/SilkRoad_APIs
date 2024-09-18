@@ -77,7 +77,7 @@ exports.getCheckoutSession = asyncHandler(async (req, res) => {
     success_url: `${req.protocol}://${req.get("host")}/api/v1/orders`,
     cancel_url: `${req.protocol}://${req.get("host")}/api/v1/orders`,
     customer_email: req.user.email,
-    client_reference_id: req.order._id.toString(),
+    client_reference_id: req.params.id,
   });
 
   res.status(200).json({
