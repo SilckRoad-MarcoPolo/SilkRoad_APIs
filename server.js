@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const colors = require("colors");
 const path = require("path");
+const bodyParser = require("body-parser");
 
 // Utils
 const ApiError = require("./src/utils/apiError");
@@ -25,7 +26,7 @@ const app = express();
 // Checkout Webhook
 app.post(
   "/webhook-checkout",
-  express.raw({ type: "application/json" }),
+  bodyParser.raw({ type: "application/json" }),
   orderController.stripeWebhook
 );
 

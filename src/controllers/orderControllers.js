@@ -93,20 +93,25 @@ exports.getCheckoutSession = asyncHandler(async (req, res) => {
  */
 exports.stripeWebhook = asyncHandler(async (req, res) => {
   const sig = req.headers["stripe-signature"];
-
   let event;
+
   try {
+    // Use req.body as a Buffer since we are using bodyParser.raw()
     event = stripe.webhooks.constructEvent(
-      req.rawBody,
+      req.body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
+    console.error(`Webhook Error: ${err.message}`);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
+  // Handle the event
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
+
+    // Retrieve the order based on session metadata or session id
     const order = await Order.findById(session.metadata.orderId);
     if (order) {
       order.isPaid = true;
