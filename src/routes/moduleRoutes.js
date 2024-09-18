@@ -3,7 +3,7 @@ const router = express.Router();
 const { protect, restrictTo } = require("../controllers/authControllers");
 const moduleController = require("../controllers/moduleControllers");
 const {
-  createAndUpdateModuleValidators,
+  createAndUpdateModuleValidator,
   checkModuleId,
 } = require("../validators/moduleValidators");
 
@@ -13,7 +13,7 @@ router
   .post(
     protect,
     restrictTo("admin"),
-    createAndUpdateModuleValidators,
+    createAndUpdateModuleValidator,
     moduleController.createModule
   );
 
@@ -23,7 +23,7 @@ router
   .patch(
     protect,
     restrictTo("admin"),
-    createAndUpdateModuleValidators,
+    createAndUpdateModuleValidator,
     moduleController.updateModule
   )
   .delete(

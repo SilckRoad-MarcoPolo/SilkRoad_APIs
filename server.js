@@ -26,7 +26,7 @@ const app = express();
 app.post(
   "/webhook-checkout",
   express.raw({ type: "application/json" }),
-  orderController.webhookCheckout
+  orderController.stripeWebhook
 );
 
 // body parser

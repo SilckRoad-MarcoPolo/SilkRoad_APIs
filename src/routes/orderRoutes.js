@@ -1,22 +1,12 @@
 const express = require("express");
+const {
+  createOrder,
+  getCheckoutSession,
+} = require("../controllers/orderControllers");
 const router = express.Router();
-const { protect, restrictTo } = require("../controllers/authControllers");
-const orderController = require("../controllers/orderControllers");
+const { protect } = require("../controllers/authControllers");
 
-router
-  .route("/")
-  .get(protect, restrictTo("admin"), orderController.getAllOrders);
-
-router
-  .route("/:id")
-  .get(protect, restrictTo("admin"), orderController.getOrderById);
-
-router
-  .route("/:id/pay")
-  .put(protect, restrictTo("admin"), orderController.updateOrderToPaid);
-
-router
-  .route("/checkout-session/:moduleId")
-  .get(protect, restrictTo("user"), orderController.getCheckoutSession);
+router.post("/", protect, createOrder);
+router.get("/:id/checkout-session", protect, getCheckoutSession);
 
 module.exports = router;
