@@ -3,7 +3,6 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const socketio = require("socket.io");
 const rateLimit = require("express-rate-limit");
 const compression = require("compression");
 const hpp = require("hpp");
@@ -22,7 +21,7 @@ const globalErrorProd = require("./src/middlewares/prodErrorMiddleware");
 // Routs
 const mainRoutes = require("./src/routes/MAINROUTES");
 
-// Webhooks Controller
+// Webhook Controller
 const orderController = require("./src/controllers/orderControllers");
 
 // Load env vars
@@ -39,7 +38,9 @@ app.use(compression());
 
 // Create HTTP server for socket.io
 const server = http.createServer(app);
-const io = socketio(server);
+
+// Setup socket.io
+require("./src/config/socket.io")(server);
 
 // Checkout Webhook
 app.post(
@@ -77,28 +78,6 @@ app.use("/api", limiter);
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "public")));
-
-// Socket.io Connection Logic
-io.on("connection", (socket) => {
-  console.log("New WebSocket connection...");
-
-  // Listen for joining a specific channel
-  socket.on("joinChannel", (channelId) => {
-    socket.join(channelId);
-    console.log(`User joined channel: ${channelId}`);
-  });
-
-  // Listen for messages and broadcast to the channel
-  socket.on("sendMessage", ({ channelId, message }) => {
-    io.to(channelId).emit("receiveMessage", message);
-    console.log(`Message sent to channel ${channelId}: ${message}`);
-  });
-
-  // Handle disconnects
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-});
 
 // Mount routers
 mainRoutes(app);
