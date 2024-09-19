@@ -7,6 +7,7 @@ const { signToken } = require("../utils/createToken");
 const ApiError = require("../utils/apiError");
 const util = require("util");
 const crypto = require("crypto");
+const { sanitizeUser } = require("../utils/sanitizeData");
 
 /**
  * @desc    Signup a new user
@@ -20,10 +21,8 @@ exports.signup = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: {
-      user,
-    },
-    token,
+    data: sanitizeUser(user),
+    token: token,
   });
 });
 
@@ -52,8 +51,8 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: { user },
-    token,
+    data: sanitizeUser(user),
+    token: token,
   });
 });
 
