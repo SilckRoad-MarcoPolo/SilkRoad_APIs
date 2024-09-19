@@ -11,7 +11,8 @@ const http = require("http");
 
 // Utils
 const ApiError = require("./src/utils/apiError");
-const globalError = require("./src/middlewares/errorMiddleware");
+const globalErrorDev = require("./src/middlewares/devErrorMiddleware");
+const globalErrorProd = require("./src/middlewares/prodErrorMiddleware");
 
 // Routs
 const mainRoutes = require("./src/routes/MAINROUTES");
@@ -84,8 +85,12 @@ app.all("*", (req, res, next) => {
   next(new ApiError(`Can't find ${req.originalUrl} on this server`, 400));
 });
 
-// Global Error Handling Middleware
-app.use(globalError);
+// Error handling middleware
+if (process.env.NODE_ENV === "development") {
+  app.use(globalErrorDev);
+} else if (process.env.NODE_ENV === "production") {
+  app.use(globalErrorProd);
+}
 
 // Server Connection
 const port = process.env.PORT || 3000;
