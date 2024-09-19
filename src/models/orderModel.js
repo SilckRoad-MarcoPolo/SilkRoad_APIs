@@ -16,15 +16,18 @@ const orderSchema = new mongoose.Schema(
     totalPrice: { type: Number, required: true },
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
-    paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
-    },
   },
   { timestamps: true, versionKey: false }
 );
+
+// Populate the user field and the module field
+orderSchema.pre(/^find/, function (next) {
+  this.populate("user", "name email").populate({
+    path: "items.module",
+    select: "name price",
+  });
+  next();
+});
 
 const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;

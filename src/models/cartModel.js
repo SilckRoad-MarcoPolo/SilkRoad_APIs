@@ -17,5 +17,14 @@ const cartSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
+// Populate the user field and the module field
+cartSchema.pre(/^find/, function (next) {
+  this.populate("user", "name, email").populate({
+    path: "items.module",
+    select: "name price",
+  });
+  next();
+});
+
 const Cart = mongoose.model("Cart", cartSchema);
 module.exports = Cart;

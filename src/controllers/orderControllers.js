@@ -130,6 +130,7 @@ exports.getMyOrderById = asyncHandler(async (req, res) => {
     _id: req.params.id,
     user: req.user._id,
   });
+
   if (!order) throw new ApiError("Order not found", 404);
 
   res.status(200).json({
@@ -150,6 +151,9 @@ exports.markOrderAsPaid = asyncHandler(async (req, res) => {
   order.isPaid = true;
   order.paidAt = Date.now();
   await order.save();
+
+  // Remove cart after order is paid
+  await Cart.findOneAndDelete({ user: order.user });
 
   res.status(200).json({
     success: true,
