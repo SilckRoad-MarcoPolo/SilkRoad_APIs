@@ -14,9 +14,11 @@ const badgeSchema = new mongoose.Schema({
     required: [true, "Badge description is required"],
   },
   requirmenets: {
-    type: String,
-    required: [true, "Requirement is required"],
+    type: String
   },
+},{
+  timestamps: true,
+  versionKey: false,
 });
 
 const badge = mongoose.model("badge", badgeSchema);

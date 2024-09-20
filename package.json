@@ -6,7 +6,12 @@
   "scripts": {
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production node server.js",
-    "test": "jest"
+    "test": "jest",
+    "test:track": "jest test/track.test.js",
+    "test:badge": "jest test/badge.test.js",
+    "test:challenge": "jest test/dailyChallenge.test.js",
+    "test:auth": "jest test/auth.test.js",
+    "test:streaks": "jest test/streaks.test.js"
   },
   "author": "Ahmed Magdy",
   "license": "ISC",
@@ -16,6 +21,7 @@
     "cloudinary": "^2.4.0",
     "colors": "^1.4.0",
     "compression": "^1.7.4",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
