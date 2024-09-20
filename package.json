@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start:dev": "nodemon server.js",
-    "start:prod": "NODE_ENV=production node server.js"
+    "start:prod": "NODE_ENV=production node server.js",
+    "test": "jest"
   },
   "author": "Ahmed Magdy",
   "license": "ISC",
@@ -30,5 +31,12 @@
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "stripe": "^16.11.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "jest": {
+    "verbose": true
   }
 }

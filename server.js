@@ -104,7 +104,7 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(
     `server (${process.env.NODE_ENV}) listening at http://localhost:${port}`
-      .yellow.bold
+      .magenta.bold
   );
 });
 
@@ -114,3 +114,6 @@ process.on("uncaughtException", (err) => {
   console.log(err);
   process.exit(1);
 });
+
+// Export app
+module.exports = app;
