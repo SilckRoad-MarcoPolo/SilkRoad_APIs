@@ -11,7 +11,6 @@ const helmet = require("helmet");
 const colors = require("colors");
 
 // Core Imports
-const path = require("path");
 const http = require("http");
 
 // Utils
@@ -80,16 +79,8 @@ const limiter = rateLimit({
 
 app.use("/api", limiter);
 
-// Serve static files
-app.use(express.static(path.join(__dirname, "public")));
-
 // Mount routers
 mainRoutes(app);
-
-// Static page for API endpoints
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "src/public", "home.html"));
-});
 
 // 404 Error Handling Middleware
 app.all("*", (req, res, next) => {
