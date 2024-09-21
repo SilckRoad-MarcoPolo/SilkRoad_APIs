@@ -1,9 +1,10 @@
 const User = require("../models/userModel");
+const Token = require("../models/tokenModel");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
 const asyncHandler = require("express-async-handler");
 const passwordResetTemplate = require("../utils/emailTemplate");
-const { signToken } = require("../utils/createToken");
+const tokens = require("../utils/createToken");
 const ApiError = require("../utils/apiError");
 const util = require("util");
 const crypto = require("crypto");
@@ -17,12 +18,16 @@ const { sanitizeUser } = require("../utils/sanitizeData");
 exports.signup = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
 
-  const token = signToken(user._id);
+  const accessToken = tokens.signToken(user._id);
+  const refreshToken = tokens.signRefreshToken(user._id);
+
+  await tokens.storeRefreshToken(user._id, refreshToken);
 
   res.status(201).json({
     status: "success",
     data: sanitizeUser(user),
-    token: token,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
   });
 });
 
@@ -47,12 +52,74 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   // If everything is ok, send token to client
-  const token = signToken(user._id);
+  const accessToken = tokens.signToken(user._id);
+  const refreshToken = tokens.signRefreshToken(user._id);
+
+  await tokens.storeRefreshToken(user._id, refreshToken);
 
   res.status(200).json({
     status: "success",
     data: sanitizeUser(user),
-    token: token,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+  });
+});
+
+/**
+ * @desc    Refresh access token
+ * @route   POST /api/v1/auth/refresh
+ * @access  Public
+ */
+exports.refreshToken = asyncHandler(async (req, res, next) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return next(new ApiError("Please provide a refresh token", 400));
+  }
+
+  // Verify refresh token
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    async (err, decoded) => {
+      if (err) {
+        return next(new ApiError("Invalid refresh token", 401));
+      }
+
+      // Check if refresh token exists in MongoDB
+      const storedToken = await Token.findOne({
+        token: refreshToken,
+        user: decoded.id,
+      });
+
+      if (!storedToken || storedToken.expiresAt < Date.now()) {
+        return next(new ApiError("Refresh token is invalid or expired", 403));
+      }
+
+      // Generate new access token
+      const newAccessToken = tokens.signToken(decoded.id);
+
+      res.status(200).json({
+        status: "success",
+        accessToken: newAccessToken,
+      });
+    }
+  );
+});
+
+/**
+ * @desc    Logout a user by blacklisting token
+ * @route   POST /api/v1/auth/logout
+ * @access  Private/Logged User
+ */
+exports.logout = asyncHandler(async (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+
+  await tokens.blacklistToken(token);
+
+  res.status(200).json({
+    status: "success",
+    message: "Logged out successfully",
   });
 });
 

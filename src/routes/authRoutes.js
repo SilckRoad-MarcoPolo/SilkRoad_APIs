@@ -1,22 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const {
-  signup,
-  login,
-  forgotPassword,
-  verifyPasswordCode,
-  resetPassword,
-} = require("../controllers/authControllers");
+const authController = require("../controllers/authControllers");
 const authValidator = require("../validators/authValidators");
 
-router.post("/signup", authValidator.signUpValidator, signup);
-router.post("/login", authValidator.logInValidator, login);
+router.post("/signup", authValidator.signUpValidator, authController.signup);
+router.post("/login", authValidator.logInValidator, authController.login);
 router.post(
   "/forgotpassword",
   authValidator.forgotPasswordValidator,
-  forgotPassword
+  authController.forgotPassword
 );
-router.post("/verifyOTP", verifyPasswordCode);
-router.put("/resetpassword", resetPassword);
+router.post("/verifyOTP", authController.verifyPasswordCode);
+router.put("/resetpassword", authController.resetPassword);
+router.post("/refresh", authController.refreshToken);
+router.post("/logout", authController.logout);
 
 module.exports = router;
