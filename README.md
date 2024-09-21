@@ -1,24 +1,28 @@
-# Silk Road Backend APIs
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Silk Road</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    .center-logo {
+    body {
+      margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      background-color: #f4f4f4;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
 <body>
-  <div class="center-logo">
-    <img src="./assets/logo.jpg" alt="Silk Road Logo">
-  </div>
+  <img src="./assets/logo.jpg" alt="Silk Road Logo">
 </body>
 </html>
 
@@ -227,8 +231,6 @@ Security is a top priority in this project. The following measures have been imp
 
 By adhering to these security practices, the application aims to provide a safe and secure environment for users.
 
-Here’s a more polished and professional presentation of your **API Routes** section, incorporating your routes clearly and effectively:
-
 ## API Routes
 
 ### Base URLs
@@ -380,6 +382,11 @@ Here’s a more polished and professional presentation of your **API Routes** se
   Retrieves a specific order by ID.  
   **Middleware**: `protect`  
   **Controller**: `orderControllers.getMyOrderById`
+
+- **POST /orders/webhook-checkout**  
+  Route to handle Stripe checkout webhooks.  
+  Body: Raw JSON  
+  Controller: `orderController.stripeWebhook`
 
 ### Chat Routes
 
