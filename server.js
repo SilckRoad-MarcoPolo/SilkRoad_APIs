@@ -7,6 +7,7 @@ const rateLimit = require("express-rate-limit");
 const compression = require("compression");
 const hpp = require("hpp");
 const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
 const colors = require("colors");
 
 // Core Imports
@@ -51,6 +52,9 @@ app.post(
 
 // body parser
 app.use(express.json({ limit: "30kb" }));
+
+// Set security HTTP headers
+app.use(helmet());
 
 // Prevent http param pollution
 app.use(

@@ -10,8 +10,7 @@
     "test:track": "jest test/track.test.js",
     "test:badge": "jest test/badge.test.js",
     "test:challenge": "jest test/dailyChallenge.test.js",
-    "test:auth": "jest test/auth.test.js",
-    "test:streaks": "jest test/streaks.test.js"
+    "test:auth": "jest test/auth.test.js"
   },
   "author": "Ahmed Magdy",
   "license": "ISC",
@@ -28,6 +27,7 @@
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.4.0",
     "express-validator": "^7.2.0",
+    "helmet": "^7.1.0",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.1",
