@@ -2,12 +2,19 @@
 
 ![Silk Road Logo](./assets/logo.jpg)
 
-### "The greatest explorer is not the one who has been everywhere, but the one who has the courage to choose their path."  
+### "The greatest explorer is not the one who has been everywhere, but the one who has the courage to choose their path."
+
 — Marco Polo
 
 ![Mood Board](./assets/moodboard.jpeg)
 
-**Silk Road** is an innovative AI-driven mobile application tailored for developers and software engineers, offering personalized learning paths that enhance skill development. Our robust backend API, meticulously crafted with Node.js and Express.js, delivers essential endpoints that empower features including user authentication, career track recommendations, and tailored skill assessments, ensuring a seamless and enriching user experience.
+---
+
+**Welcome to Silk Road**, an innovative AI-driven mobile application designed specifically for developers and software engineers. Silk Road offers personalized learning paths that significantly enhance skill development.
+
+Our meticulously crafted backend API, built using Node.js and Express.js, provides essential endpoints that empower a range of features.
+
+Experience a robust and enriching platform that transforms the way developers and software engineers navigate their careers.
 
 ![Silk Road Logo](./assets/silkroad.jpeg)
 
@@ -18,6 +25,19 @@ Our API is live and fully operational. You can access it here:
 [**Silk Road APIs**](https://silkroadapis-production.up.railway.app/)
 
 Explore the available endpoints and integrate them seamlessly into your application. We encourage you to leverage the capabilities of our API for enhanced functionality and user experience.
+
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [Security](#security)
+- [API Routes](#api-routes)
+- [API Documentation](#api-documentation)
+- [Testing](#testing)
+- [Error Handling](#error-handling)
+- [License](#license)
+- [Author](#author)
 
 ## Features
 
