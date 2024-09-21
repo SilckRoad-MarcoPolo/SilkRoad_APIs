@@ -8,6 +8,7 @@ const compression = require("compression");
 const hpp = require("hpp");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
+const cors = require("cors");
 const colors = require("colors");
 
 // Core Imports
@@ -32,6 +33,9 @@ require("./src/config/db")();
 
 // Initialize express app
 const app = express();
+
+// Enable CORS
+app.use(cors());
 
 // Enable compression
 app.use(compression());
