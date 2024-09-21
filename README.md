@@ -1,30 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Silk Road</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f4f4f4;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-  </style>
-</head>
-<body>
-  <img src="./assets/logo.jpg" alt="Silk Road Logo">
-</body>
-</html>
+# Silk Road Backend APIs
+
+![Silk Road Logo](./assets/logo.jpg)
+
+### "The greatest explorer is not the one who has been everywhere, but the one who has the courage to choose their path."  
+— Marco Polo
+
+![Mood Board](./assets/moodboard.jpeg)
 
 **Silk Road** is an innovative AI-driven mobile application tailored for developers and software engineers, offering personalized learning paths that enhance skill development. Our robust backend API, meticulously crafted with Node.js and Express.js, delivers essential endpoints that empower features including user authentication, career track recommendations, and tailored skill assessments, ensuring a seamless and enriching user experience.
 
