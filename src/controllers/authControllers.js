@@ -295,11 +295,13 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // generate new token ater all is ok
-  const token = signToken(user._id);
+  const accessToken = tokens.signToken(user._id);
+  const refreshToken = tokens.signRefreshToken(user._id);
 
   res.status(200).json({
     status: "success",
     message: "Password reset Successfully",
-    token: token,
+    token: accessToken,
+    refreshToken: refreshToken,
   });
 });
