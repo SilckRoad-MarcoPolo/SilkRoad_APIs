@@ -55,6 +55,9 @@ Explore the available endpoints and integrate them seamlessly into your applicat
 
   - **User Registration**: Implement a secure signup process utilizing JWT for robust authentication.
   - **User Login**: Streamlined login experience with token generation to manage user sessions efficiently.
+  - **Refresh Token**:
+    - Generate refresh tokens upon user login to maintain sessions without requiring re-authentication.
+    - Use refresh tokens to obtain new access tokens, enhancing user experience and security.
   - **Password Recovery**:
     - Initiate password resets via email, enhancing user security.
     - OTP verification process to confirm identity before resetting passwords.
@@ -62,11 +65,13 @@ Explore the available endpoints and integrate them seamlessly into your applicat
 - **User Management**:
 
   - Comprehensive CRUD operations for effective user account management.
-  - **User-Centric Operations**:
-    - **Retrieve Profile**: Access detailed information of the logged-in user.
-    - **Profile Update**: Modify personal details, including name and email, with validation.
-    - **Password Update**: Change the user's password securely with real-time validation checks.
-    - **Account Deactivation**: Provide users with the option to deactivate their accounts, promoting user autonomy.
+- **User-Centric Operations**:
+  
+  - **Retrieve Profile**: Access detailed information of the logged-in user.
+  - **Profile Update**: Modify personal details, including name and email, with validation.
+  - **Password Update**: Change the user's password securely with real-time validation checks.
+  - **Account Deactivation**: Provide users with the option to deactivate their accounts, promoting user autonomy.
+  - **Logout**: Invalidate the current session by logging out, ensuring enhanced security and control over user sessions.
 
 - **Photo Uploads**:
 
@@ -177,7 +182,10 @@ DB_URL=<YOUR_MONGODB_URI>
 
 # JWT
 JWT_SECRET=<YOUR_JWT_SECRET>
-JWT_EXPIRES_IN=30d
+JWT_EXPIRES_IN=7d
+REFRESH_TOKEN_SECRET=<YOUR_REFRESH_TOKEN_SECRET>
+REFRESH_TOKEN_EXPIRES_IN=30d
+REFRESH_TOKEN_EXPIRES_IN_MS=2592000000
 
 # Email
 EMAIL_HOST=<YOUR_SMTP_HOST>
@@ -261,6 +269,10 @@ By adhering to these security practices, the application aims to provide a safe 
   **Validators**: `authValidator.logInValidator`  
   **Controller**: `login`
 
+- **POST /api/v1/auth/refresh**  
+  Generates a new access token using a valid refresh token.  
+  **Controller**: `refreshToken`  
+
 - **POST /api/v1/auth/forgotpassword**  
   Initiates a password reset request.  
   **Validators**: `authValidator.forgotPasswordValidator`  
@@ -295,6 +307,11 @@ By adhering to these security practices, the application aims to provide a safe 
   Deactivates the user's account.  
   **Middleware**: `protect`  
   **Controller**: `userController.inactiveAccount`
+
+- **POST /api/v1/users/logout**  
+  Logs out the user by invalidating the current session.  
+  **Middleware**: `protect`  
+  **Controller**: `logout`  
 
 ### Admin Routes (Require Admin Access)
 

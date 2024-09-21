@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { protect, restrictTo } = require("../controllers/authControllers");
+const {
+  protect,
+  restrictTo,
+  logout,
+} = require("../controllers/authControllers");
 const userController = require("../controllers/userControllers");
 const userValidators = require("../validators/userValidators");
 
@@ -24,6 +28,8 @@ router
 router
   .route("/inactiveaccount")
   .delete(protect, userController.inactiveAccount);
+
+router.post("/logout", protect, logout);
 
 // Routes that require restrictTo middleware
 router
