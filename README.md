@@ -12,6 +12,13 @@
 
 ![Silk Road Logo](./assets/logo.jpg)
 
+## Achievements
+
+🏆 **1st Place Winner** - IEEE Vectoris 3.0  
+Silk Road's backend architecture was recognized for its excellence in **backend development** and **system design**, securing the **1st place award** in the prestigious IEEE Vectoris 3.0 competition. This recognition highlights our commitment to delivering a high-performance, scalable, and reliable solution.
+
+---
+
 ### "The greatest explorer is not the one who has been everywhere, but the one who has the courage to choose their path."
 
 — Marco Polo
